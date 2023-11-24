@@ -8,7 +8,6 @@ type PropsStyles = {
 };
 
 export const SafeArea = styled.SafeAreaView`
-  flex: 1;
   background: ${({theme}) => theme.colors.white};
 `;
 
@@ -17,7 +16,10 @@ export const Container = styled.View`
 `;
 
 export const View = styled.View<PropsStyles>`
-  margin: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -26,33 +28,37 @@ export const View = styled.View<PropsStyles>`
   ${({input}) =>
     input &&
     css`
-      flex-direction: row;
+      width: 68%;
+      margin-right: 10px;
+      flex-wrap: nowrap;
     `};
 
   ${({dropZone}) =>
     dropZone &&
     css`
-      margin: 20px 20px 10px 20px;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      padding: 0px;
     `};
 `;
 
-export const Clear = styled(Icon)`
-  font-size: 15px;
+export const Clear = styled.TouchableOpacity`
+  width: 15px;
+  height: 15px;
+  background: transparent;
   position: absolute;
-  right: 10;
+  right: 5px;
+`;
+
+export const IconClear = styled(Icon)`
+  font-size: 15px;
+  color: ${({theme}) => theme.colors.grays.light};
 `;
 
 export const Input = styled.TextInput<PropsStyles>`
-  width: 70%;
+  width: 100%;
   height: 40px;
   padding: 0px 10px;
   background: ${({theme}) => theme.colors.grays.lighter};
   border-radius: 4px;
-  flex: 1;
 
   ${({correct, theme}) =>
     correct &&
@@ -64,7 +70,7 @@ export const Input = styled.TextInput<PropsStyles>`
 `;
 
 export const DropZone = styled.View`
-  width: 70%;
+  width: 100%;
   height: 40px;
   padding: 10px 10px;
   background: ${({theme}) => theme.colors.grays.lighter};

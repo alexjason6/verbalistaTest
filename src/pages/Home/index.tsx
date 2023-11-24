@@ -8,7 +8,15 @@ import {suggestions} from '../../data/suggestions';
 import Draggable from './components/Dragrable';
 import {checkDropZone} from '../../utils/checkDropZone';
 
-import {DropZone, Clear, Input, SafeArea, Text, View} from './styles';
+import {
+  DropZone,
+  Clear,
+  IconClear,
+  Input,
+  SafeArea,
+  Text,
+  View,
+} from './styles';
 
 export const Home: React.FC = () => {
   const [res, setRes] = useState<string>('');
@@ -66,14 +74,20 @@ export const Home: React.FC = () => {
     [dropZones],
   );
 
+  const handleClearInput = (input: string) => {
+    const userItemRemove = userItems.filter(
+      userItem => userItem.name !== input,
+    );
+
+    setUserItems(userItemRemove);
+  };
+
   return (
     <SafeArea>
       {items.map((item: {name: string; value: number}, index: number) => {
         const [userItemExists] = userItems?.filter(
           userItem => userItem.name === item.name,
         );
-
-        console.log(userItemExists);
         return (
           <View
             dropZone
@@ -82,47 +96,45 @@ export const Home: React.FC = () => {
             <Text allowFontScaling={true} maxFontSizeMultiplier={2}>
               {item.name}
             </Text>
-            {handleEvent === 'move' ? (
-              <DropZone>
-                <Text dropZone>Drop a word here!</Text>
-              </DropZone>
-            ) : (
-              <View input>
-                <Input
-                  placeholder={'Type or drop a word here!'}
-                  placeholderTextColor="#444444"
-                  returnKeyType={
-                    index !== items.length - 1 ? 'next' : 'default'
-                  }
-                  value={userItemExists?.translate}
-                  onChangeText={(value: string) => setRes(value)}
-                  correct={!!userItemExists}
-                />
-                <Clear name="x" color="#444444" />
-              </View>
-            )}
+            <View input>
+              {handleEvent === 'move' ? (
+                <DropZone>
+                  <Text dropZone>Drop a word here!</Text>
+                </DropZone>
+              ) : (
+                <>
+                  <Input
+                    placeholder={'Type or drop a word here!'}
+                    placeholderTextColor="#444444"
+                    returnKeyType={
+                      index !== items.length - 1 ? 'next' : 'default'
+                    }
+                    value={userItemExists?.translate}
+                    onChangeText={(value: string) => setRes(value)}
+                    correct={!!userItemExists}
+                  />
+                  {userItemExists && (
+                    <Clear onPress={() => handleClearInput(item.name)}>
+                      <IconClear name="x" />
+                    </Clear>
+                  )}
+                </>
+              )}
+            </View>
           </View>
         );
       })}
       <View>
-        {suggestions.map(item => {
-          //console.log('Olá', item, userItems);
-          /* console.log(
-            userItems.filter(userItem => userItem.translate === item.translate),
-          ); */
-          return (
-            <Draggable
-              key={item.name}
-              item={item}
-              correct={false}
-              func={(
-                value: any,
-                event: any,
-                position: {x: number; y: number},
-              ) => handleSetInput(value, event, position)}
-            />
-          );
-        })}
+        {suggestions.map(item => (
+          <Draggable
+            key={item.name}
+            item={item}
+            correct={false}
+            func={(value: any, event: any, position: {x: number; y: number}) =>
+              handleSetInput(value, event, position)
+            }
+          />
+        ))}
       </View>
     </SafeArea>
   );
