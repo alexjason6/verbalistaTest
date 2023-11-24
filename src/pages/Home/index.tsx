@@ -38,27 +38,9 @@ export const Home: React.FC = () => {
       }
 
       if (event === 'move') {
-        //console.log('DropZone response:', dropZone);
-        /* if (dropZone) {
-          setUserItems(prevState => {
-            const prevExists = prevState?.filter(
-              prevItem => prevItem.name === dropZone[1].name,
-            );
-
-            console.log('prevState:', prevExists);
-            if (!prevExists) {
-              return [dropZone[1]];
-            } else {
-              return [...prevState, dropZone[1]];
-            }
-          });
-          //console.log('DropZone encontrada:', dropZone);
-          // Faça o que for necessário com a DropZone encontrada
-        }
-
-        //console.log(itemFiltered);
-      } */
+        // aqui vai entrar algo para ser feito enquanto <Draggable> é arrastado.
       }
+
       if (event === 'stoped') {
         if (dropZone) {
           setUserItems(prevState => {
@@ -66,11 +48,13 @@ export const Home: React.FC = () => {
               prevItem => prevItem.name === dropZone[1].name,
             );
 
-            console.log('prevState:', prevExists);
-            if (!prevExists) {
-              return [dropZone[1]];
+            if (prevExists) {
+              const removeRepeted = prevState.filter(
+                prevItem => prevItem.name !== dropZone[1].name,
+              );
+              return [...removeRepeted, dropZone[1]];
             } else {
-              return [...prevState, dropZone[1]];
+              return [dropZone[1]];
             }
           });
           //console.log('DropZone encontrada:', dropZone);
