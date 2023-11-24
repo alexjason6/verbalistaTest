@@ -27,8 +27,6 @@ export const Home: React.FC = () => {
     ]);
   };
 
-  console.log(userItems);
-
   const handleSetInput = useCallback(
     (value: any, event: string, position: {x: number; y: number}) => {
       const dropZone = checkDropZone(position, value.props.value, dropZones);
@@ -71,6 +69,11 @@ export const Home: React.FC = () => {
   return (
     <SafeArea>
       {items.map((item: {name: string; value: number}, index: number) => {
+        const [userItemExists] = userItems?.filter(
+          userItem => userItem.name === item.name,
+        );
+
+        console.log(userItemExists);
         return (
           <View
             dropZone
@@ -88,9 +91,9 @@ export const Home: React.FC = () => {
                 placeholder={'Type or drop a word here!'}
                 placeholderTextColor="#444444"
                 returnKeyType={index !== items.length - 1 ? 'next' : 'default'}
-                //value={filterUserValues[0]?.translate}
+                value={userItemExists?.translate}
                 onChangeText={(value: string) => setRes(value)}
-                correct={false}
+                correct={!!userItemExists}
               />
             )}
           </View>
