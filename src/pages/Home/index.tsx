@@ -8,7 +8,7 @@ import {suggestions} from '../../data/suggestions';
 import Draggable from './components/Dragrable';
 import {checkDropZone} from '../../utils/checkDropZone';
 
-import {DropZone, Input, SafeArea, Text, View} from './styles';
+import {DropZone, Clear, Input, SafeArea, Text, View} from './styles';
 
 export const Home: React.FC = () => {
   const [res, setRes] = useState<string>('');
@@ -87,14 +87,19 @@ export const Home: React.FC = () => {
                 <Text dropZone>Drop a word here!</Text>
               </DropZone>
             ) : (
-              <Input
-                placeholder={'Type or drop a word here!'}
-                placeholderTextColor="#444444"
-                returnKeyType={index !== items.length - 1 ? 'next' : 'default'}
-                value={userItemExists?.translate}
-                onChangeText={(value: string) => setRes(value)}
-                correct={!!userItemExists}
-              />
+              <View input>
+                <Input
+                  placeholder={'Type or drop a word here!'}
+                  placeholderTextColor="#444444"
+                  returnKeyType={
+                    index !== items.length - 1 ? 'next' : 'default'
+                  }
+                  value={userItemExists?.translate}
+                  onChangeText={(value: string) => setRes(value)}
+                  correct={!!userItemExists}
+                />
+                <Clear name="x" color="#444444" />
+              </View>
             )}
           </View>
         );

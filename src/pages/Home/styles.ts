@@ -1,8 +1,10 @@
 import styled, {css} from 'styled-components/native';
+import Icon from 'react-native-vector-icons/Feather';
 
 type PropsStyles = {
   dropZone?: boolean;
   correct?: boolean | any;
+  input?: boolean;
 };
 
 export const SafeArea = styled.SafeAreaView`
@@ -21,6 +23,12 @@ export const View = styled.View<PropsStyles>`
   align-items: center;
   flex-wrap: wrap;
 
+  ${({input}) =>
+    input &&
+    css`
+      flex-direction: row;
+    `};
+
   ${({dropZone}) =>
     dropZone &&
     css`
@@ -32,12 +40,19 @@ export const View = styled.View<PropsStyles>`
     `};
 `;
 
+export const Clear = styled(Icon)`
+  font-size: 15px;
+  position: absolute;
+  right: 10;
+`;
+
 export const Input = styled.TextInput<PropsStyles>`
   width: 70%;
   height: 40px;
   padding: 0px 10px;
   background: ${({theme}) => theme.colors.grays.lighter};
   border-radius: 4px;
+  flex: 1;
 
   ${({correct, theme}) =>
     correct &&
