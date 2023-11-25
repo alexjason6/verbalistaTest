@@ -6,20 +6,24 @@ import {type PropsComponents} from '../../../../types/PropsComponents';
 import {Text} from './styles';
 
 export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
-  const [userValue, setUserValue] = useState('');
-  const [showDraggable, setShowDraggable] = useState(true);
+  const [userValue, setUserValue] = useState<string | any>();
   const pan = useRef(new Animated.ValueXY()).current;
-  const opacity = new Animated.Value(1);
+
+  const sendDataToFunc = (value: {props: {value: string}}) => {
+    const position = {x: 0, y: 0};
+    const action = value.props.value;
+
+    func?.(action, 'click', position);
+  };
 
   const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: (e: any, gesture: any) => {
+    onStartShouldSetPanResponder: (e: any) => {
       const eventValue =
         e._dispatchInstances[1].pendingProps.children.props.children;
 
       setUserValue(eventValue);
-      const position = {x: gesture.moveX, y: gesture.moveY};
 
-      func?.(eventValue, 'click', position);
+      sendDataToFunc(eventValue);
 
       return true;
     },
@@ -56,23 +60,19 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
   };
 
   return (
-    <>
-      {showDraggable && (
-        <View {...panResponder.panHandlers}>
-          <Animated.View
-            key={item?.value}
-            style={[panStyle, style.item, style.shadow]}>
-            <Text
-              style={correct && {color: '#aaaaaa'}}
-              allowFontScaling={true}
-              maxFontSizeMultiplier={2}
-              value={item?.translate}>
-              {item?.name}
-            </Text>
-          </Animated.View>
-        </View>
-      )}
-    </>
+    <View {...panResponder.panHandlers}>
+      <Animated.View
+        key={item?.value}
+        style={[panStyle, style.item, style.shadow]}>
+        <Text
+          style={correct && style.textSelected}
+          allowFontScaling={true}
+          maxFontSizeMultiplier={2}
+          value={item?.translate}>
+          {item?.name}
+        </Text>
+      </Animated.View>
+    </View>
   );
 };
 
@@ -92,6 +92,9 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#eeeeee',
     borderStyle: 'solid',
+  },
+  textSelected: {
+    color: '#aaaaaa',
   },
 });
 

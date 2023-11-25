@@ -3,6 +3,7 @@ import {items} from '../data/items';
 export const checkDropZone = (
   position: {x: number; y: number},
   value: string,
+  event: string,
   dropZones: any,
 ) => {
   for (const dropZone of dropZones) {
@@ -11,7 +12,7 @@ export const checkDropZone = (
       (item: {value: string}) => item.value === value,
     );
 
-    if (!!ok && dropZoneFilter) {
+    if ((!!ok && dropZoneFilter) || (event === 'click' && dropZoneFilter)) {
       if (dropZone.value === value) {
         const [itemFiltered] = items.filter(item => item.name === value);
 
@@ -24,8 +25,6 @@ export const checkDropZone = (
         return [dropZone, refreshArray];
       }
       // Faça o que for necessário com a DropZone encontrada
-    } else {
-      //console.log('Draggable fora de qualquer DropZone');
     }
   }
 };

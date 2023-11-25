@@ -19,12 +19,10 @@ import {
 } from './styles';
 
 export const Home: React.FC = () => {
-  const [res, setRes] = useState<string>('');
   const [handleEvent, setHandleEvent] = useState('');
   const [dropZones, setDropZones] = useState<PropsDropZones[]>([]);
   const [userItems, setUserItems] = useState<PropsItems[]>([]);
-
-  //console.log({userItems});
+  const [suggestionsFiltered, setSuggestionsFilterd] = useState(suggestions);
 
   // Collect dropZones on screen
   const dropZonesLayout = (event: any, itemName: string) => {
@@ -35,48 +33,41 @@ export const Home: React.FC = () => {
     ]);
   };
 
+  // handle change state of Inpput
   const handleSetInput = useCallback(
-    (
-      value: {props: {value: string}},
-      event: string,
-      position: {x: number; y: number},
-    ) => {
-      const dropZone = checkDropZone(position, value.props.value, dropZones);
+    (value: string, event: string, position: {x: number; y: number}) => {
+      const dropZone = checkDropZone(position, value, event, dropZones);
 
-      if (event === 'click') {
-        console.log(event, value.props.value, position);
-      }
+      console.log(event);
 
-      if (event === 'move') {
-        // aqui vai entrar algo para ser feito enquanto <Draggable> é arrastado.
-      }
+      if ((event === 'stoped' || event === 'click') && dropZone) {
+        setUserItems(prevState => {
+          const prevExists = prevState?.filter(
+            prevItem => prevItem.name === dropZone[1].name,
+          );
 
-      if (event === 'stoped') {
-        if (dropZone) {
-          setUserItems(prevState => {
-            const prevExists = prevState?.filter(
-              prevItem => prevItem.name === dropZone[1].name,
+          if (prevExists) {
+            const removeRepeted = prevState.filter(
+              prevItem => prevItem.name !== dropZone[1].name,
             );
-
-            if (prevExists) {
-              const removeRepeted = prevState.filter(
-                prevItem => prevItem.name !== dropZone[1].name,
-              );
-              return [...removeRepeted, dropZone[1]];
-            } else {
-              return [dropZone[1]];
-            }
-          });
-          //console.log('DropZone encontrada:', dropZone);
-          // Faça o que for necessário com a DropZone encontrada
-        }
-
-        //console.log(itemFiltered);
+            return [...removeRepeted, dropZone[1]];
+          } else {
+            return [dropZone[1]];
+          }
+        });
       }
       setHandleEvent(event);
     },
     [dropZones],
   );
+
+  const handleFilterSuggestions = (value: string) => {
+    const filter = suggestions.filter(suggestion =>
+      suggestion.name.toLowerCase().includes(value.toLowerCase()),
+    );
+
+    setSuggestionsFilterd(filter);
+  };
 
   const handleClearInput = (input: string) => {
     const userItemRemove = userItems.filter(
@@ -101,7 +92,7 @@ export const Home: React.FC = () => {
               {item.name}
             </Text>
             <View input>
-              {handleEvent === 'move' ? (
+              {handleEvent === 'move' && !userItemExists ? (
                 <DropZone>
                   <Text dropZone>Drop a word here!</Text>
                 </DropZone>
@@ -112,7 +103,9 @@ export const Home: React.FC = () => {
                       index !== items.length - 1 ? 'next' : 'default'
                     }
                     value={userItemExists?.translate}
-                    onChangeText={(value: string) => setRes(value)}
+                    onChangeText={(value: string) =>
+                      handleFilterSuggestions(value)
+                    }
                     correct={!!userItemExists}
                   />
                   {userItemExists && (
@@ -127,7 +120,7 @@ export const Home: React.FC = () => {
         );
       })}
       <View>
-        {suggestions.map(item => {
+        {suggestionsFiltered.map(item => {
           const [userItemExists] = userItems?.filter(
             userItem => userItem.name === item.translate,
           );
