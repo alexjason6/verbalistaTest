@@ -38,8 +38,6 @@ export const Home: React.FC = () => {
     (value: string, event: string, position: {x: number; y: number}) => {
       const dropZone = checkDropZone(position, value, event, dropZones);
 
-      console.log(event);
-
       if ((event === 'stoped' || event === 'click') && dropZone) {
         setUserItems(prevState => {
           const prevExists = prevState?.filter(

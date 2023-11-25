@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Animated, PanResponder, StyleSheet, View} from 'react-native';
+import {Animated, PanResponder, StyleSheet, View, Platform} from 'react-native';
 
 import {type PropsComponents} from '../../../../types/PropsComponents';
 
@@ -82,6 +82,7 @@ const style = StyleSheet.create({
     shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    elevation: Platform.OS === 'android' ? 5 : 0,
   },
   item: {
     paddingVertical: 5,

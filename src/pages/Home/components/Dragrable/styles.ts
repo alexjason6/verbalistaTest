@@ -1,4 +1,5 @@
 import styled, {css} from 'styled-components/native';
+import {Platform} from 'react-native';
 
 interface Props {
   value?: string;
@@ -6,7 +7,7 @@ interface Props {
 }
 
 export const Text = styled.Text<Props>`
-  font-size: 14px;
+  font-size: ${Platform.OS === 'ios' ? '14px' : '16px'};
   font-weight: bold;
   color: ${({theme}) => theme.colors.grays.dark};
 

@@ -12,10 +12,6 @@ export const SafeArea = styled.SafeAreaView`
   background: ${({theme}) => theme.colors.white};
 `;
 
-export const Container = styled.View`
-  padding-top: 20px;
-`;
-
 export const View = styled.View<PropsStyles>`
   margin-top: 20px;
   margin-left: 20px;
@@ -72,7 +68,7 @@ export const Input = styled.TextInput<PropsStyles>`
     `};
 `;
 
-export const DropZone = styled.View`
+export const DropZone = styled.View<PropsStyles>`
   width: 100%;
   height: 40px;
   padding: 10px 10px;
