@@ -8,6 +8,7 @@ type PropsStyles = {
 };
 
 export const SafeArea = styled.SafeAreaView`
+  flex: 1;
   background: ${({theme}) => theme.colors.white};
 `;
 
