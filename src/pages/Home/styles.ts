@@ -21,7 +21,7 @@ export const View = styled.View<PropsStyles>`
   margin-right: 20px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
 
@@ -30,6 +30,7 @@ export const View = styled.View<PropsStyles>`
     css`
       width: 68%;
       margin-right: 10px;
+      justify-content: space-between;
       flex-wrap: nowrap;
     `};
 
@@ -37,6 +38,7 @@ export const View = styled.View<PropsStyles>`
     dropZone &&
     css`
       padding: 0px;
+      justify-content: space-between;
     `};
 `;
 

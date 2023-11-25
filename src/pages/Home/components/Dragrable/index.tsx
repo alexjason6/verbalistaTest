@@ -43,22 +43,11 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
       const position = {x: gesture.moveX, y: gesture.moveY};
 
       func?.(userValue, 'stoped', position);
-      if (correct) {
-        pan.extractOffset();
-        Animated.timing(opacity, {
-          toValue: 0,
-          useNativeDriver: true,
-          duration: 400,
-        }).start(() => {
-          setShowDraggable(false);
-        });
-      } else {
-        Animated.spring(pan, {
-          toValue: {x: 0, y: 0},
-          useNativeDriver: true,
-          friction: 5,
-        }).start();
-      }
+      Animated.spring(pan, {
+        toValue: {x: 0, y: 0},
+        useNativeDriver: true,
+        friction: 5,
+      }).start();
     },
   });
 
@@ -74,6 +63,7 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
             key={item?.value}
             style={[panStyle, style.item, style.shadow]}>
             <Text
+              style={correct && {color: '#aaaaaa'}}
               allowFontScaling={true}
               maxFontSizeMultiplier={2}
               value={item?.translate}>

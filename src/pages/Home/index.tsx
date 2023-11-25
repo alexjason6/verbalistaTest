@@ -36,7 +36,11 @@ export const Home: React.FC = () => {
   };
 
   const handleSetInput = useCallback(
-    (value: any, event: string, position: {x: number; y: number}) => {
+    (
+      value: {props: {value: string}},
+      event: string,
+      position: {x: number; y: number},
+    ) => {
       const dropZone = checkDropZone(position, value.props.value, dropZones);
 
       if (event === 'click') {
@@ -104,8 +108,6 @@ export const Home: React.FC = () => {
               ) : (
                 <>
                   <Input
-                    placeholder={'Type or drop a word here!'}
-                    placeholderTextColor="#444444"
                     returnKeyType={
                       index !== items.length - 1 ? 'next' : 'default'
                     }
@@ -125,16 +127,23 @@ export const Home: React.FC = () => {
         );
       })}
       <View>
-        {suggestions.map(item => (
-          <Draggable
-            key={item.name}
-            item={item}
-            correct={false}
-            func={(value: any, event: any, position: {x: number; y: number}) =>
-              handleSetInput(value, event, position)
-            }
-          />
-        ))}
+        {suggestions.map(item => {
+          const [userItemExists] = userItems?.filter(
+            userItem => userItem.name === item.translate,
+          );
+          return (
+            <Draggable
+              key={item.name}
+              item={item}
+              correct={!!userItemExists}
+              func={(
+                value: any,
+                event: any,
+                position: {x: number; y: number},
+              ) => handleSetInput(value, event, position)}
+            />
+          );
+        })}
       </View>
     </SafeArea>
   );
