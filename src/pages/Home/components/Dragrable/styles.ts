@@ -1,5 +1,9 @@
 import styled, {css} from 'styled-components/native';
-import {Platform} from 'react-native';
+import {PixelRatio} from 'react-native';
+
+const pr = PixelRatio.get();
+
+console.log(pr);
 
 interface Props {
   value?: string;
@@ -7,7 +11,7 @@ interface Props {
 }
 
 export const Text = styled.Text<Props>`
-  font-size: ${Platform.OS === 'ios' ? '14px' : '16px'};
+  font-size: ${pr <= 2 ? '16px' : '17px'};
   font-weight: bold;
   color: ${({theme}) => theme.colors.grays.dark};
 

@@ -1,10 +1,14 @@
 import styled, {css} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
+import {Dimensions} from 'react-native';
+
+const {height} = Dimensions.get('screen');
 
 type PropsStyles = {
   dropZone?: boolean;
   correct?: boolean | any;
   input?: boolean;
+  draggable?: boolean;
 };
 
 export const SafeArea = styled.SafeAreaView`
@@ -13,7 +17,7 @@ export const SafeArea = styled.SafeAreaView`
 `;
 
 export const View = styled.View<PropsStyles>`
-  margin-top: 20px;
+  margin-top: ${height >= 853 ? '18px' : '14px'};
   margin-left: 20px;
   margin-right: 20px;
   display: flex;
@@ -37,6 +41,12 @@ export const View = styled.View<PropsStyles>`
       padding: 0px;
       justify-content: space-between;
     `};
+
+  ${({draggable}) =>
+    draggable &&
+    css`
+      margin-top: 10px;
+    `}
 `;
 
 export const Clear = styled.TouchableOpacity`

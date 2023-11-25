@@ -9,11 +9,14 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
   const [userValue, setUserValue] = useState<string | any>();
   const pan = useRef(new Animated.ValueXY()).current;
 
-  const sendDataToFunc = (value: {props: {value: string}}) => {
-    const position = {x: 0, y: 0};
+  const sendDataToFunc = (
+    value: {props: {value: string}},
+    event: string,
+    position: {x: number; y: number},
+  ) => {
     const action = value.props.value;
 
-    func?.(action, 'click', position);
+    func?.(action, event, position);
   };
 
   const panResponder = PanResponder.create({
@@ -23,15 +26,12 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
 
       setUserValue(eventValue);
 
-      sendDataToFunc(eventValue);
-
       return true;
     },
-    onPanResponderMove: (e, gesture) => {
+    onPanResponderMove: (e: any, gesture: {moveX: number; moveY: number}) => {
       const position = {x: gesture.moveX, y: gesture.moveY};
 
-      func?.(userValue, 'move', position);
-
+      sendDataToFunc(userValue, 'move', position);
       return Animated.event(
         [
           null,
@@ -43,10 +43,10 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
         {useNativeDriver: false},
       )(e, gesture);
     },
-    onPanResponderRelease: (e, gesture) => {
+    onPanResponderRelease: (e, gesture: {moveX: number; moveY: number}) => {
       const position = {x: gesture.moveX, y: gesture.moveY};
 
-      func?.(userValue, 'stoped', position);
+      sendDataToFunc(userValue, 'stoped', position);
       Animated.spring(pan, {
         toValue: {x: 0, y: 0},
         useNativeDriver: true,

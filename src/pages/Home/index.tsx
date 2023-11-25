@@ -24,7 +24,6 @@ export const Home: React.FC = () => {
   const [userItems, setUserItems] = useState<PropsItems[]>([]);
   const [suggestionsFiltered, setSuggestionsFilterd] = useState(suggestions);
 
-  // Collect dropZones on screen
   const dropZonesLayout = (event: any, itemName: string) => {
     const {x, y, width, height} = event.nativeEvent.layout;
     setDropZones(prevDropZones => [
@@ -33,7 +32,6 @@ export const Home: React.FC = () => {
     ]);
   };
 
-  // handle change state of Inpput
   const handleSetInput = useCallback(
     (value: string, event: string, position: {x: number; y: number}) => {
       const dropZone = checkDropZone(position, value, event, dropZones);
@@ -78,7 +76,7 @@ export const Home: React.FC = () => {
   return (
     <SafeArea>
       {items.map((item: {name: string; value: number}, index: number) => {
-        const [userItemExists] = userItems?.filter(
+        const [userItemExists]: any = userItems?.filter(
           userItem => userItem.name === item.name,
         );
         return (
@@ -101,6 +99,9 @@ export const Home: React.FC = () => {
                       index !== items.length - 1 ? 'next' : 'default'
                     }
                     value={userItemExists?.translate}
+                    autoCorrect={false}
+                    spellCheck={false}
+                    keyboardType="visible-password"
                     onChangeText={(value: string) =>
                       handleFilterSuggestions(value)
                     }
@@ -117,7 +118,7 @@ export const Home: React.FC = () => {
           </View>
         );
       })}
-      <View>
+      <View draggable>
         {suggestionsFiltered.map(item => {
           const [userItemExists] = userItems?.filter(
             userItem => userItem.name === item.translate,

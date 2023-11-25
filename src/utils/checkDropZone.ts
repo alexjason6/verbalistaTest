@@ -7,24 +7,42 @@ export const checkDropZone = (
   dropZones: any,
 ) => {
   for (const dropZone of dropZones) {
-    const ok = Math.abs(position.y / 10 - dropZone.y / 10) <= 3;
+    const ok =
+      Math.abs(
+        Number((position.y - 77).toFixed(0)) - Number(dropZone.y.toFixed(0)),
+      ) <= 15;
     const [dropZoneFilter] = dropZones.filter(
       (item: {value: string}) => item.value === value,
     );
 
-    if ((!!ok && dropZoneFilter) || (event === 'click' && dropZoneFilter)) {
-      if (dropZone.value === value) {
-        const [itemFiltered] = items.filter(item => item.name === value);
+    if (
+      (ok && dropZoneFilter && dropZone.value === value) ||
+      (event === 'click' &&
+        dropZoneFilter &&
+        position.x === 0 &&
+        position.y === 0 &&
+        !ok)
+    ) {
+      const [itemFiltered] = items.filter(item => item.name === value);
 
-        const refreshArray = {
-          name: itemFiltered.name,
-          value: itemFiltered.value,
-          correct: true,
-          translate: itemFiltered.translate,
-        };
-        return [dropZone, refreshArray];
-      }
-      // Faça o que for necessário com a DropZone encontrada
+      const refreshArray = {
+        name: itemFiltered.name,
+        value: itemFiltered.value,
+        correct: true,
+        translate: itemFiltered.translate,
+      };
+
+      return [dropZone, refreshArray];
+    }
+
+    if (
+      event === 'click' &&
+      dropZoneFilter &&
+      position.x === 0 &&
+      position.y === 0 &&
+      !ok
+    ) {
+      null;
     }
   }
 };
