@@ -34,15 +34,5 @@ export const checkDropZone = (
 
       return [dropZone, refreshArray];
     }
-
-    if (
-      event === 'click' &&
-      dropZoneFilter &&
-      position.x === 0 &&
-      position.y === 0 &&
-      !ok
-    ) {
-      null;
-    }
   }
 };

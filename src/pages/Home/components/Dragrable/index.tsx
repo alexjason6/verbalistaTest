@@ -14,17 +14,20 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
     event: string,
     position: {x: number; y: number},
   ) => {
-    const action = value.props.value;
+    const action = value?.props?.value;
 
     func?.(action, event, position);
   };
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (e: any) => {
+      const position = {x: 0, y: 0};
       const eventValue =
         e._dispatchInstances[1].pendingProps.children.props.children;
 
       setUserValue(eventValue);
+
+      sendDataToFunc(userValue, 'click', position);
 
       return true;
     },
