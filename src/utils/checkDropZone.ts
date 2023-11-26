@@ -9,20 +9,13 @@ export const checkDropZone = (
   for (const dropZone of dropZones) {
     const ok =
       Math.abs(
-        Number((position.y - 77).toFixed(0)) - Number(dropZone.y.toFixed(0)),
-      ) <= 15;
+        Number((position.y - 20).toFixed(0)) - Number(dropZone.y.toFixed(0)),
+      ) <= 20;
     const [dropZoneFilter] = dropZones.filter(
       (item: {value: string}) => item.value === value,
     );
 
-    if (
-      (ok && dropZoneFilter && dropZone.value === value) ||
-      (event === 'click' &&
-        dropZoneFilter &&
-        position.x === 0 &&
-        position.y === 0 &&
-        !ok)
-    ) {
+    if (ok && dropZoneFilter && dropZone.value === value) {
       const [itemFiltered] = items.filter(item => item.name === value);
 
       const refreshArray = {

@@ -18,4 +18,4 @@ export default function Main() {
   );
 }
 
-AppRegistry.registerComponent('Verbalista', () => Main);
+AppRegistry.registerComponent('verbalistatest', () => Main);

@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Animated, PanResponder, StyleSheet, View, Platform} from 'react-native';
+import {Dimensions} from 'react-native';
 
 import {type PropsComponents} from '../../../../types/PropsComponents';
 
@@ -21,13 +22,10 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (e: any) => {
-      const position = {x: 0, y: 0};
       const eventValue =
         e._dispatchInstances[1].pendingProps.children.props.children;
 
       setUserValue(eventValue);
-
-      sendDataToFunc(userValue, 'click', position);
 
       return true;
     },
@@ -50,7 +48,7 @@ export const Draggable: React.FC<PropsComponents> = ({item, correct, func}) => {
       const position = {x: gesture.moveX, y: gesture.moveY};
 
       sendDataToFunc(userValue, 'stoped', position);
-      Animated.spring(pan, {
+      return Animated.spring(pan, {
         toValue: {x: 0, y: 0},
         useNativeDriver: true,
         friction: 5,
